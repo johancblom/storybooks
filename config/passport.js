@@ -1,4 +1,5 @@
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const TwitterStrategy = require('passport-twitter').Strategy;
 const mongoose = require('mongoose');
 const keys = require('./keys');
 // Load user model
@@ -41,6 +42,17 @@ module.exports = function(passport){
       })
     })
   );
+
+  passport.use(new TwitterStrategy({
+    consumerKey: keys.twitterClientID,
+    consumerSecret: keys.twitterClientSecret,
+    callbackURL: '/auth/twitter/callback' //this will need to be dealt with
+    }, function(token, tokenSecret, profile, done) {
+      console.log(profile);
+      process.nextTick(function () {
+        return done(null, profile);
+      });
+    }));
 
   passport.serializeUser((user, done) => {
     done(null, user.id);

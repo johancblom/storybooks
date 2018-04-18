@@ -9,6 +9,13 @@ router.get('/google/callback',
     res.redirect('/dashboard');
   });
 
+router.get('/twitter', passport.authenticate('twitter', {scope: ['profile', 'email']}));
+
+router.get('/twitter/callback',
+  passport.authenticate('twitter', {faulreRedirect: '/' }),(req, res) => {
+    res.redirect('/dashboard');
+  });
+
 router.get('/verify', (req, res) => {
   if(req.user){
     console.log(req.user);
